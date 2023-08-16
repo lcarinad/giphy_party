@@ -1,26 +1,26 @@
 async function getGif(search) {
   try {
-    // const url = `https://api.giphy.com/v1/gifs/random?api_key=NXddwAskkCcwbHSVXaI1QJdl0WTbkIER&tag=${search}&rating=pg-13`;
-    const res = await axios.get(
-      `https://api.giphy.com/v1/gifs/random?api_key=NXddwAskkCcwbHSVXaI1QJdl0WTbkIER&tag=${search}&rating=pg-13`
-    );
-    const img = document.querySelector("img");
-    const imgUrl = res.data.data.url;
-    img.src = imgUrl;
-    // const imgDiv = document.querySelector("#meme-container");
-    // let memeImg = document.createElement("img");
-    // memeImg.src = res.data.data.looping.mp4;
-    // imgDiv.append(memeImg);
-    console.log(res.data.data.url);
-  } catch (error) {
-    console.log(error);
-    alert("Try another search term!");
+    const url = `https://api.giphy.com/v1/gifs/random?api_key=NXddwAskkCcwbHSVXaI1QJdl0WTbkIER&tag=${search}&rating=pg`;
+    const res = await axios.get(url);
+    const imgUrl = res.data.data.images.original.url;
+    appendGifs(imgUrl);
+  } catch {
+    alert("try another search term");
   }
 }
+async function appendGifs(imgUrl) {
+  const $memeContainer = $(".meme-container");
+  const $img = $("<img>").attr("src", imgUrl);
+  $memeContainer.append($img);
+}
 
-const input = document.querySelector("#searchBar");
-document.querySelector("form").addEventListener("submit", function (e) {
+const $input = $("#searchBar");
+
+$("#searchForm").on("submit", async function (e) {
   e.preventDefault();
-  console.log(input.value);
-  getGif(input.value);
+  await getGif($input.val());
+});
+$("#remove-btn").on("click", function (e) {
+  e.preventDefault();
+  console.log("delete");
 });
